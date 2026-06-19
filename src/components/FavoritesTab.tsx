@@ -3,6 +3,7 @@ import { useFavoritesStore } from '../store/useFavoritesStore'
 import { useConverterStore } from '../store/useConverterStore'
 import { getLatest } from '../api/frankfurter'
 import { formatRate } from '../lib/format'
+import Flag from './Flag'
 
 export default function FavoritesTab() {
   const { pairs, removePair } = useFavoritesStore()
@@ -64,16 +65,13 @@ export default function FavoritesTab() {
               }}
             >
               <div className="flex items-center gap-2">
-                <img
-                  src={`/assets/images/flags/${p.base.toLowerCase()}.webp`}
-                  alt=""
-                  className="size-5 rounded-full object-cover"
+                <Flag
+                  code={p.base}
+                  className="relative z-10 size-6 shadow-sm"
                 />
-                <span className="text-sm text-text-secondary">→</span>
-                <img
-                  src={`/assets/images/flags/${p.target.toLowerCase()}.webp`}
-                  alt=""
-                  className="size-5 rounded-full object-cover"
+                <Flag
+                  code={p.target}
+                  className="size-5"
                 />
               </div>
 

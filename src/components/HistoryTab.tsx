@@ -142,77 +142,81 @@ export default function HistoryTab() {
 
   return (
     <div className="p-5 lg:p-6">
-      {/* Stats bar */}
-      {stats && (
-        <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
-          <div className="rounded-xl bg-surface-700/30 p-4">
-            <Stat label="Open" value={formatRate(stats.open)} />
+      <div className="mb-6 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+        {/* Stats bar */}
+        {stats && (
+          <div className="flex gap-4 overflow-x-auto no-scrollbar pb-2 md:pb-0">
+            <div className="rounded-xl bg-surface-700/40 px-5 py-3 shrink-0 min-w-[110px]">
+              <Stat label="Open" value={formatRate(stats.open)} />
+            </div>
+            <div className="rounded-xl bg-surface-700/40 px-5 py-3 shrink-0 min-w-[110px]">
+              <Stat label="Last" value={formatRate(stats.last)} />
+            </div>
+            <div className="rounded-xl bg-surface-700/40 px-5 py-3 shrink-0 min-w-[110px]">
+              <Stat
+                label="Change"
+                value={`${stats.change >= 0 ? '+' : ''}${formatRate(stats.change)}`}
+                positive={stats.change >= 0}
+              />
+            </div>
+            <div className="rounded-xl bg-surface-700/40 px-5 py-3 shrink-0 min-w-[110px]">
+              <Stat
+                label="% change"
+                value={`${stats.percentChange >= 0 ? '▲ +' : '▼ '}${Math.abs(stats.percentChange).toFixed(2)}%`}
+                positive={stats.percentChange >= 0}
+              />
+            </div>
           </div>
-          <div className="rounded-xl bg-surface-700/30 p-4">
-            <Stat label="Last" value={formatRate(stats.last)} />
-          </div>
-          <div className="rounded-xl bg-surface-700/30 p-4">
-            <Stat
-              label="Change"
-              value={`${stats.change >= 0 ? '+' : ''}${formatRate(stats.change)}`}
-              positive={stats.change >= 0}
-            />
-          </div>
-          <div className="rounded-xl bg-surface-700/30 p-4">
-            <Stat
-              label="% change"
-              value={`${stats.percentChange >= 0 ? '+' : ''}${stats.percentChange.toFixed(2)}%`}
-              positive={stats.percentChange >= 0}
-            />
-          </div>
-        </div>
-      )}
+        )}
 
-      {/* Range selector */}
-      <div className="mb-4 flex gap-1" role="tablist" aria-label="Chart range">
-        {ranges.map((r) => (
-          <button
-            key={r}
-            role="tab"
-            aria-selected={chartRange === r}
-            onClick={() => setChartRange(r)}
-            className={`cursor-pointer rounded-md px-3 py-1 text-xs font-medium transition-colors ${
-              chartRange === r
-                ? 'bg-accent text-surface-900'
-                : 'bg-surface-700 text-text-secondary hover:bg-surface-600'
-            }`}
-          >
-            {r}
-          </button>
-        ))}
+        {/* Range selector */}
+        <div className="flex gap-1 shrink-0 rounded-lg bg-surface-700/30 p-1" role="tablist" aria-label="Chart range">
+          {ranges.map((r) => (
+            <button
+              key={r}
+              role="tab"
+              aria-selected={chartRange === r}
+              onClick={() => setChartRange(r)}
+              className={`cursor-pointer rounded-md px-3 py-1.5 text-[11px] font-bold transition-colors ${
+                chartRange === r
+                  ? 'bg-surface-600 text-text-primary shadow-sm'
+                  : 'text-text-secondary hover:bg-surface-600/50 hover:text-text-primary'
+              }`}
+            >
+              {r}
+            </button>
+          ))}
+        </div>
       </div>
 
-      {/* Chart area */}
-      <div className="mb-2 flex items-center gap-2 text-xs text-text-secondary">
-        <span className="font-semibold text-text-primary">{base}/{target}</span>
-        {stats && <span>{formatRate(stats.last)} · {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>}
+      {/* Chart container */}
+      <div className="rounded-2xl bg-surface-700/20 p-4 md:p-6">
+        <div className="mb-6 flex items-center justify-between text-[11px] font-semibold tracking-wider text-text-secondary uppercase">
+          <span className="text-text-primary text-sm">{base}/{target}</span>
+          {stats && <span>{formatRate(stats.last)} · {new Date().toLocaleDateString('en-US', { month: 'short', day: 'numeric', hour: '2-digit', minute: '2-digit' })}</span>}
+        </div>
+
+        {loading && (
+          <div className="flex h-[280px] items-center justify-center text-sm text-text-secondary">
+            Loading chart...
+          </div>
+        )}
+
+        {error && (
+          <div className="flex h-[280px] flex-col items-center justify-center text-center">
+            <p className="text-sm font-medium text-text-primary">No chart data available</p>
+            <p className="mt-1 text-xs text-text-secondary">
+              We couldn't load rate history for {base}/{target} right now.
+            </p>
+          </div>
+        )}
+
+        {!loading && !error && points.length > 0 && (
+          <div className="h-[280px]">
+            <Line data={chartData} options={chartOptions} />
+          </div>
+        )}
       </div>
-
-      {loading && (
-        <div className="flex h-64 items-center justify-center text-sm text-text-secondary">
-          Loading chart...
-        </div>
-      )}
-
-      {error && (
-        <div className="flex h-64 flex-col items-center justify-center text-center">
-          <p className="text-sm font-medium text-text-primary">No chart data available</p>
-          <p className="mt-1 text-xs text-text-secondary">
-            We couldn't load rate history for {base}/{target} right now.
-          </p>
-        </div>
-      )}
-
-      {!loading && !error && points.length > 0 && (
-        <div className="h-64">
-          <Line data={chartData} options={chartOptions} />
-        </div>
-      )}
     </div>
   )
 }

@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import { useLogStore } from '../store/useLogStore'
 import { formatAmount, relativeTime } from '../lib/format'
+import Flag from './Flag'
 
 export default function LogTab() {
   const { entries, removeEntry, clearAll } = useLogStore()
@@ -64,16 +65,14 @@ export default function LogTab() {
             className="flex items-center gap-3 rounded-lg px-3 py-2.5 transition-colors hover:bg-surface-700"
           >
             <div className="flex items-center gap-2">
-              <img
-                src={`/assets/images/flags/${e.base.toLowerCase()}.webp`}
-                alt=""
-                className="size-5 rounded-full object-cover"
+              <Flag
+                code={e.base}
+                className="relative z-10 size-6 shadow-sm"
               />
               <span className="text-sm text-text-secondary">→</span>
-              <img
-                src={`/assets/images/flags/${e.target.toLowerCase()}.webp`}
-                alt=""
-                className="size-5 rounded-full object-cover"
+              <Flag
+                code={e.target}
+                className="size-5"
               />
             </div>
 

@@ -4,6 +4,7 @@ import { useFavoritesStore } from '../store/useFavoritesStore'
 import { useLogStore } from '../store/useLogStore'
 import { useUIStore } from '../store/useUIStore'
 import { formatAmount, formatRate } from '../lib/format'
+import Flag from './Flag'
 import { getRate } from '../api/frankfurter'
 
 export default function Converter() {
@@ -62,7 +63,7 @@ export default function Converter() {
                 className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-surface-600 px-3 py-2 text-sm transition-colors hover:bg-surface-500"
                 aria-haspopup="dialog"
               >
-                <Flag code={base} />
+                <Flag code={base} className="size-5" />
                 <span className="font-semibold">{base}</span>
                 <Chevron />
               </button>
@@ -94,7 +95,7 @@ export default function Converter() {
                 className="flex shrink-0 cursor-pointer items-center gap-2 rounded-lg bg-surface-600 px-3 py-2 text-sm transition-colors hover:bg-surface-500"
                 aria-haspopup="dialog"
               >
-                <Flag code={target} />
+                <Flag code={target} className="size-5" />
                 <span className="font-semibold">{target}</span>
                 <Chevron />
               </button>
@@ -112,7 +113,7 @@ export default function Converter() {
               onClick={handleToggleFavorite}
               className={`flex cursor-pointer items-center gap-1.5 rounded-lg px-4 py-2.5 text-sm font-semibold transition-colors ${
                 isPinned
-                  ? 'bg-accent text-surface-900'
+                  ? 'bg-[#cef739] text-[#111111]'
                   : 'border border-surface-500 text-text-primary hover:border-surface-400'
               }`}
               aria-pressed={isPinned}
@@ -121,7 +122,7 @@ export default function Converter() {
                 src={isPinned ? '/assets/images/icon-star-filled.svg' : '/assets/images/icon-star.svg'}
                 alt=""
                 className="size-4"
-                style={!isPinned ? { filter: 'brightness(0) invert(1)' } : {}}
+                style={isPinned ? { filter: 'brightness(0)' } : { filter: 'brightness(0) invert(1)' }}
               />
               {isPinned ? 'FAVORITED' : 'FAVORITE'}
             </button>
@@ -140,16 +141,7 @@ export default function Converter() {
   )
 }
 
-function Flag({ code }: { code: string }) {
-  return (
-    <img
-      src={`/assets/images/flags/${code.toLowerCase()}.webp`}
-      alt=""
-      className="size-5 rounded-full object-cover"
-      loading="lazy"
-    />
-  )
-}
+// The local Flag function is removed.
 
 function Chevron() {
   return (

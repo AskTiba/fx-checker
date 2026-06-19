@@ -3,6 +3,7 @@ import { getCurrencies } from '../api/frankfurter'
 import { searchCurrencies, groupCurrencies } from '../lib/filter'
 import { useConverterStore } from '../store/useConverterStore'
 import { useUIStore } from '../store/useUIStore'
+import Flag from './Flag'
 
 export default function CurrencyPicker() {
   const { base, target, setBase, setTarget } = useConverterStore()
@@ -64,7 +65,7 @@ export default function CurrencyPicker() {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 pt-12 md:items-center md:pt-0"
+      className="fixed inset-0 z-50 flex items-end justify-center bg-black/40 pt-12 backdrop-blur-sm animate-in md:items-center md:pt-0"
       onClick={handleBackdropClick}
     >
       <div
@@ -72,14 +73,15 @@ export default function CurrencyPicker() {
         role="dialog"
         aria-modal="true"
         aria-label="Select currency"
-        className="mx-2 max-h-[80vh] w-full max-w-md overflow-hidden rounded-xl border border-surface-500 bg-surface-800 shadow-2xl"
+        className="mx-2 mb-4 w-full max-w-md overflow-hidden rounded-2xl border border-surface-600 bg-surface-800/95 shadow-2xl shadow-black/50 backdrop-blur-md animate-slide-up md:mb-0 md:max-h-[80vh] md:animate-slide-down"
+        style={{ maxHeight: 'calc(100vh - 2rem)' }}
       >
-        <div className="border-b border-surface-600 p-3">
+        <div className="border-b border-surface-600/50 bg-surface-800/50 p-4">
           <div className="relative">
             <img
               src="/assets/images/icon-search.svg"
               alt=""
-              className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2"
+              className="pointer-events-none absolute left-3.5 top-1/2 size-4 -translate-y-1/2 opacity-50 transition-opacity peer-focus:opacity-100"
             />
             <input
               ref={inputRef}
@@ -87,13 +89,13 @@ export default function CurrencyPicker() {
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
               placeholder="Search currencies..."
-              className="w-full rounded-lg bg-surface-700 py-2.5 pl-9 pr-3 text-sm text-text-primary placeholder-text-tertiary outline-none focus:ring-1 focus:ring-accent"
+              className="peer w-full rounded-xl bg-surface-700/50 py-3 pl-10 pr-4 text-sm text-text-primary placeholder-text-tertiary outline-none ring-1 ring-transparent transition-all focus:bg-surface-700 focus:ring-accent"
               aria-label="Search currencies"
             />
           </div>
         </div>
 
-        <div className="overflow-y-auto" style={{ maxHeight: 'calc(80vh - 60px)' }}>
+        <div className="overflow-y-auto" style={{ maxHeight: '50vh' }}>
           {!searchQuery && (
             <Section title="Popular" currencies={grouped.popular} selected={selectedCode} onSelect={handleSelect} />
           )}
@@ -133,15 +135,13 @@ function Section({
         <button
           key={c.code}
           onClick={() => onSelect(c.code)}
-          className={`flex w-full cursor-pointer items-center gap-3 px-4 py-2.5 text-left text-sm transition-colors hover:bg-surface-700 ${
-            c.code === selected ? 'bg-accent/5' : ''
+          className={`group flex w-full cursor-pointer items-center gap-3 px-4 py-3 text-left text-sm transition-all duration-200 hover:bg-surface-700/80 active:scale-[0.98] ${
+            c.code === selected ? 'bg-accent/10' : ''
           }`}
         >
-          <img
-            src={`/assets/images/flags/${c.code.toLowerCase()}.webp`}
-            alt=""
-            className="size-6 rounded-full object-cover"
-            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
+          <Flag
+            code={c.code}
+            className="size-6 shadow-sm transition-transform duration-200 group-hover:scale-110"
           />
           <span className={`font-semibold ${c.code === selected ? 'text-accent' : 'text-text-primary'}`}>
             {c.code}

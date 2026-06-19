@@ -28,10 +28,10 @@ export default function TabPanel() {
 
   return (
     <div className="space-y-4">
-      {/* Desktop/tablet tab bar */}
+      {/* Scrollable tab bar */}
       <div
         role="tablist"
-        className="hidden gap-8 md:flex"
+        className="no-scrollbar flex gap-6 overflow-x-auto border-b border-surface-600/30 pb-[1px] md:gap-8"
         aria-label="Sections"
       >
         {tabs.map((tab) => {
@@ -42,15 +42,17 @@ export default function TabPanel() {
               role="tab"
               aria-selected={activeTab === tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex cursor-pointer items-center gap-2 border-b-2 py-2 text-sm font-bold uppercase tracking-wider transition-colors ${
+              className={`group flex shrink-0 cursor-pointer items-center gap-2 border-b-2 py-3 text-sm font-bold uppercase tracking-wider transition-all duration-300 ${
                 activeTab === tab.id
                   ? 'border-accent text-text-primary'
                   : 'border-transparent text-text-secondary hover:text-text-primary'
               }`}
             >
-              {tab.label}
+              <span className={`transition-transform duration-300 ${activeTab !== tab.id ? 'group-hover:scale-105' : ''}`}>
+                {tab.label}
+              </span>
               {badge !== null && (
-                <span className="flex size-5 items-center justify-center rounded-full bg-surface-700 text-[10px] tabular-nums text-text-primary">
+                <span className="flex size-5 items-center justify-center rounded-full bg-accent/20 text-[10px] tabular-nums text-accent">
                   {badge}
                 </span>
               )}
@@ -59,25 +61,7 @@ export default function TabPanel() {
         })}
       </div>
 
-      <section className="rounded-2xl border border-surface-600 bg-surface-800 overflow-hidden">
-
-      {/* Mobile tab dropdown */}
-      <div className="border-b border-surface-600 md:hidden">
-        <select
-          value={activeTab}
-          onChange={(e) => setActiveTab(e.target.value as TabId)}
-          className="w-full cursor-pointer bg-surface-800 px-4 py-3 text-sm text-text-primary outline-none"
-          aria-label="Select section"
-        >
-          {tabs.map((tab) => (
-            <option key={tab.id} value={tab.id}>
-              {tab.label}
-              {tab.id === 'favorites' && favCount > 0 ? ` (${favCount})` : ''}
-              {tab.id === 'log' && logCount > 0 ? ` (${logCount})` : ''}
-            </option>
-          ))}
-        </select>
-      </div>
+      <section className="rounded-2xl border border-surface-600 bg-surface-800 overflow-hidden shadow-2xl shadow-black/20 transition-all">
 
       {/* Tab panels */}
       {activeTab === 'history' && <HistoryTab />}
