@@ -13,7 +13,7 @@ import { useConverterStore } from '../store/useConverterStore'
 import { useUIStore } from '../store/useUIStore'
 import { getTimeSeries } from '../api/frankfurter'
 import { formatRate, formatDate } from '../lib/format'
-import type { TimeSeriesPoint, ChartStats } from '../types/currency'
+import type { ChartStats } from '../types/currency'
 
 ChartJS.register(CategoryScale, LinearScale, PointElement, LineElement, Filler, Tooltip)
 
@@ -41,7 +41,7 @@ export default function HistoryTab() {
   const chartRange = useUIStore((s) => s.chartRange)
   const setChartRange = useUIStore((s) => s.setChartRange)
 
-  const [points, setPoints] = useState<TimeSeriesPoint[]>([])
+  const [points, setPoints] = useState<{ date: string; rate: number }[]>([])
   const [stats, setStats] = useState<ChartStats | null>(null)
   const [error, setError] = useState(false)
   const [loading, setLoading] = useState(true)
@@ -53,9 +53,7 @@ export default function HistoryTab() {
 
     getTimeSeries(base, target, start, end)
       .then((data) => {
-        const pts: TimeSeriesPoint[] = Object.entries(data.rates)
-          .sort(([a], [b]) => a.localeCompare(b))
-          .map(([date, rates]) => ({ date, rate: rates[target] }))
+        const pts = data.map((d) => ({ date: d.date, rate: d.rate }))
 
         setPoints(pts)
 

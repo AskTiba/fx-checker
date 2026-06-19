@@ -1,5 +1,4 @@
 import { useEffect, useState, useRef } from 'react'
-import type { Currency } from '../types/currency'
 import { getCurrencies } from '../api/frankfurter'
 import { searchCurrencies, groupCurrencies } from '../lib/filter'
 import { useConverterStore } from '../store/useConverterStore'
@@ -12,18 +11,16 @@ export default function CurrencyPicker() {
   const searchQuery = useUIStore((s) => s.searchQuery)
   const setSearchQuery = useUIStore((s) => s.setSearchQuery)
 
-  const [currencies, setCurrencies] = useState<Currency[]>([])
+  const [currencies, setCurrencies] = useState<{ code: string; name: string }[]>([])
   const inputRef = useRef<HTMLInputElement>(null)
   const dialogRef = useRef<HTMLDivElement>(null)
 
   const selectedCode = side === 'base' ? base : target
 
   useEffect(() => {
-    getCurrencies().then((data) => {
-      const list = Object.entries(data).map(([code, name]) => ({ code, name }))
-      list.sort((a, b) => a.code.localeCompare(b.code))
-      setCurrencies(list)
-    })
+    getCurrencies()
+      .then(setCurrencies)
+      .catch(() => {})
   }, [])
 
   useEffect(() => {
@@ -61,8 +58,15 @@ export default function CurrencyPicker() {
     close()
   }
 
+  function handleBackdropClick(e: React.MouseEvent) {
+    if (e.target === e.currentTarget) close()
+  }
+
   return (
-    <div className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 pt-12 md:items-center md:pt-0">
+    <div
+      className="fixed inset-0 z-50 flex items-start justify-center bg-black/60 pt-12 md:items-center md:pt-0"
+      onClick={handleBackdropClick}
+    >
       <div
         ref={dialogRef}
         role="dialog"
@@ -112,7 +116,7 @@ function Section({
   onSelect,
 }: {
   title: string
-  currencies: Currency[]
+  currencies: { code: string; name: string }[]
   selected: string
   onSelect: (code: string) => void
 }) {
@@ -137,6 +141,7 @@ function Section({
             src={`/assets/images/flags/${c.code.toLowerCase()}.webp`}
             alt=""
             className="size-6 rounded-full object-cover"
+            onError={(e) => { (e.target as HTMLImageElement).style.display = 'none' }}
           />
           <span className={`font-semibold ${c.code === selected ? 'text-accent' : 'text-text-primary'}`}>
             {c.code}

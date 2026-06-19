@@ -19,7 +19,7 @@ export default function CompareTab() {
   useEffect(() => {
     setLoading(true)
     getLatest(base, POPULAR_CURRENCIES)
-      .then((data) => setRates(data.rates))
+      .then(setRates)
       .catch(() => {})
       .finally(() => setLoading(false))
   }, [base])

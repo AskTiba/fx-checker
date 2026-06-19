@@ -14,7 +14,7 @@ export default function FavoritesTab() {
     pairs.forEach((p) => {
       getLatest(p.base, [p.target])
         .then((data) => {
-          const rate = data.rates[p.target]
+          const rate = data[p.target]
           setLiveRates((prev) => ({
             ...prev,
             [p.id]: { rate, change: 0 },

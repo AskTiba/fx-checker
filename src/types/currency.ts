@@ -1,27 +1,16 @@
-export interface Currency {
-  code: string
+export interface CurrencyData {
+  iso_code: string
   name: string
+  symbol: string
+  start_date: string
+  end_date: string
 }
 
-export type Currencies = Record<string, string>
-
-export interface Rate {
+export interface RateEntry {
+  date: string
   base: string
-  date: string
-  rates: Record<string, number>
-}
-
-export interface TimeSeriesPoint {
-  date: string
+  quote: string
   rate: number
-}
-
-export interface TimeSeries {
-  base: string
-  target: string
-  start: string
-  end: string
-  rates: Record<string, Record<string, number>>
 }
 
 export interface FavoritePair {

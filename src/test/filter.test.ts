@@ -1,8 +1,7 @@
 import { describe, it, expect } from 'vitest'
 import { searchCurrencies, groupCurrencies, isPopular } from '../lib/filter'
-import type { Currency } from '../types/currency'
 
-const currencies: Currency[] = [
+const currencies: { code: string; name: string }[] = [
   { code: 'USD', name: 'United States Dollar' },
   { code: 'EUR', name: 'Euro' },
   { code: 'JPY', name: 'Japanese Yen' },

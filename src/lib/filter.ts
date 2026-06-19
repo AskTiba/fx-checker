@@ -1,5 +1,3 @@
-import type { Currency } from '../types/currency'
-
 const POPULAR_CURRENCIES = new Set(['USD', 'EUR', 'GBP', 'JPY', 'CHF', 'CAD', 'AUD', 'NZD'])
 
 export function isPopular(code: string): boolean {
@@ -7,9 +5,9 @@ export function isPopular(code: string): boolean {
 }
 
 export function searchCurrencies(
-  currencies: Currency[],
+  currencies: { code: string; name: string }[],
   query: string
-): Currency[] {
+): { code: string; name: string }[] {
   const q = query.toLowerCase().trim()
   if (!q) return currencies
   return currencies.filter(
@@ -19,12 +17,12 @@ export function searchCurrencies(
   )
 }
 
-export function groupCurrencies(currencies: Currency[]): {
-  popular: Currency[]
-  other: Currency[]
+export function groupCurrencies(currencies: { code: string; name: string }[]): {
+  popular: { code: string; name: string }[]
+  other: { code: string; name: string }[]
 } {
-  const popular: Currency[] = []
-  const other: Currency[] = []
+  const popular: { code: string; name: string }[] = []
+  const other: { code: string; name: string }[] = []
   for (const c of currencies) {
     if (isPopular(c.code)) {
       popular.push(c)

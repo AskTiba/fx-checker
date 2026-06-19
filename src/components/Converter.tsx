@@ -1,16 +1,23 @@
+import { useEffect } from 'react'
 import { useConverterStore } from '../store/useConverterStore'
 import { useFavoritesStore } from '../store/useFavoritesStore'
 import { useLogStore } from '../store/useLogStore'
 import { useUIStore } from '../store/useUIStore'
 import { formatAmount, formatRate } from '../lib/format'
+import { getRate } from '../api/frankfurter'
 
 export default function Converter() {
-  const { base, target, amount, rate, setAmount, swap } = useConverterStore()
+  const { base, target, amount, rate, setAmount, swap, setRate } = useConverterStore()
   const isPinned = useFavoritesStore((s) => s.isPinned(base, target))
   const addPair = useFavoritesStore((s) => s.addPair)
   const removePair = useFavoritesStore((s) => s.removePair)
   const addLogEntry = useLogStore((s) => s.addEntry)
   const openCurrencyPicker = useUIStore((s) => s.openCurrencyPicker)
+
+  useEffect(() => {
+    setRate(null)
+    getRate(base, target).then(setRate).catch(() => setRate(null))
+  }, [base, target, setRate])
 
   const pinnedId = useFavoritesStore((s) => {
     const p = s.pairs.find((p) => p.base === base && p.target === target)

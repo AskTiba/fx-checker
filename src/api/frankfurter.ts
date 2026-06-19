@@ -1,4 +1,4 @@
-import type { Currencies, Rate, TimeSeries } from '../types/currency'
+import type { RateEntry } from '../types/currency'
 import { getCached, setCache } from '../lib/cache'
 
 const BASE_URL = 'https://api.frankfurter.dev'
@@ -17,27 +17,51 @@ async function fetchJson<T>(url: string): Promise<T> {
   return data
 }
 
-export async function getCurrencies(): Promise<Currencies> {
-  return fetchJson<Currencies>(`${BASE_URL}/v2/currencies`)
+export async function getCurrencies(): Promise<
+  { code: string; name: string }[]
+> {
+  const data = await fetchJson<
+    { iso_code: string; name: string }[]
+  >(`${BASE_URL}/v2/currencies`)
+  return data.map((c) => ({ code: c.iso_code, name: c.name }))
+}
+
+export async function getRate(
+  base: string,
+  target: string
+): Promise<number> {
+  const data = await fetchJson<{ rate: number }>(
+    `${BASE_URL}/v2/rate/${base}/${target}`
+  )
+  return data.rate
 }
 
 export async function getLatest(
   base: string,
-  symbols?: string[]
-): Promise<Rate> {
+  quotes?: string[]
+): Promise<Record<string, number>> {
   const params = new URLSearchParams({ base })
-  if (symbols && symbols.length > 0) {
-    params.set('symbols', symbols.join(','))
+  if (quotes && quotes.length > 0) {
+    params.set('quotes', quotes.join(','))
   }
-  return fetchJson<Rate>(`${BASE_URL}/v2/latest?${params}`)
+  const data = await fetchJson<RateEntry[]>(
+    `${BASE_URL}/v2/rates?${params}`
+  )
+  const result: Record<string, number> = {}
+  for (const entry of data) {
+    result[entry.quote] = entry.rate
+  }
+  return result
 }
 
 export async function getTimeSeries(
   base: string,
   target: string,
-  start: string,
-  end: string
-): Promise<TimeSeries> {
-  const params = new URLSearchParams({ base, symbols: target })
-  return fetchJson<TimeSeries>(`${BASE_URL}/v2/${start}..${end}?${params}`)
+  from: string,
+  to: string
+): Promise<RateEntry[]> {
+  const params = new URLSearchParams({ base, quotes: target, from, to })
+  return fetchJson<RateEntry[]>(
+    `${BASE_URL}/v2/rates?${params}`
+  )
 }

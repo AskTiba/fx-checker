@@ -6,7 +6,7 @@ export default function Header() {
 
   useEffect(() => {
     getCurrencies()
-      .then((currencies) => setCount(Object.keys(currencies).length))
+      .then((currencies) => setCount(currencies.length))
       .catch(() => setCount(null))
   }, [])
 
