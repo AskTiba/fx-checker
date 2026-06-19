@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: 'JetBrains Mono Variable';
+  src: url('/assets/fonts/jetbrains-mono/jetbrains-mono-variable.ttf') format('truetype');
+  font-weight: 100 900;
+  font-style: normal;
+}
+
+@theme {
+  --color-surface-900: #0a0a0a;
+  --color-surface-800: #141414;
+  --color-surface-700: #1e1e1e;
+  --color-surface-600: #2a2a2a;
+  --color-surface-500: #353535;
+  --color-accent: #cef739;
+  --color-accent-dim: #a0d42a;
+  --color-text-primary: #ffffff;
+  --color-text-secondary: #9d9d9d;
+  --color-text-tertiary: #6b6b6b;
+  --color-positive: #34d399;
+  --color-negative: #ef4444;
+  --font-mono: 'JetBrains Mono Variable', monospace;
+}
+
+body {
+  margin: 0;
+  background-color: var(--color-surface-900);
+  color: var(--color-text-primary);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
