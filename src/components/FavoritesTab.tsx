@@ -99,7 +99,7 @@ export default function FavoritesTab() {
                   e.stopPropagation()
                   removePair(p.id)
                 }}
-                className="flex size-8 shrink-0 items-center justify-center rounded-full hover:bg-surface-600"
+                className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full hover:bg-surface-600"
                 aria-label={`Unpin ${p.base} to ${p.target}`}
               >
                 <img

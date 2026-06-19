@@ -34,7 +34,7 @@ export default function LogTab() {
         {!showConfirm ? (
           <button
             onClick={() => setShowConfirm(true)}
-            className="ml-auto text-xs text-text-tertiary underline underline-offset-2 hover:text-text-secondary"
+            className="ml-auto cursor-pointer text-xs text-text-tertiary underline underline-offset-2 hover:text-text-secondary"
           >
             Clear all
           </button>
@@ -43,13 +43,13 @@ export default function LogTab() {
             <span className="text-xs text-text-secondary">Clear all entries?</span>
             <button
               onClick={handleClearAll}
-              className="rounded bg-negative px-2 py-0.5 text-[11px] text-white"
+              className="cursor-pointer rounded bg-negative px-2 py-0.5 text-[11px] text-white"
             >
               Yes
             </button>
             <button
               onClick={() => setShowConfirm(false)}
-              className="rounded bg-surface-600 px-2 py-0.5 text-[11px] text-text-secondary"
+              className="cursor-pointer rounded bg-surface-600 px-2 py-0.5 text-[11px] text-text-secondary"
             >
               No
             </button>
@@ -98,7 +98,7 @@ export default function LogTab() {
 
             <button
               onClick={() => removeEntry(e.id)}
-              className="flex size-8 shrink-0 items-center justify-center rounded-full hover:bg-surface-600"
+              className="flex size-8 shrink-0 cursor-pointer items-center justify-center rounded-full hover:bg-surface-600"
               aria-label={`Delete conversion ${e.base} to ${e.target}`}
             >
               <img src="/assets/images/icon-delete.svg" alt="" className="size-4" />

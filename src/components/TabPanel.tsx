@@ -27,11 +27,11 @@ export default function TabPanel() {
   }
 
   return (
-    <section className="rounded-xl border border-surface-600 bg-surface-800">
+    <div className="space-y-4">
       {/* Desktop/tablet tab bar */}
       <div
         role="tablist"
-        className="hidden border-b border-surface-600 md:flex"
+        className="hidden gap-8 md:flex"
         aria-label="Sections"
       >
         {tabs.map((tab) => {
@@ -42,15 +42,15 @@ export default function TabPanel() {
               role="tab"
               aria-selected={activeTab === tab.id}
               onClick={() => setActiveTab(tab.id)}
-              className={`flex items-center gap-2 px-5 py-3 text-sm font-medium transition-colors ${
+              className={`flex cursor-pointer items-center gap-2 border-b-2 py-2 text-sm font-bold uppercase tracking-wider transition-colors ${
                 activeTab === tab.id
-                  ? 'border-b-2 border-accent text-accent'
-                  : 'text-text-secondary hover:text-text-primary'
+                  ? 'border-accent text-text-primary'
+                  : 'border-transparent text-text-secondary hover:text-text-primary'
               }`}
             >
               {tab.label}
               {badge !== null && (
-                <span className="rounded-full bg-surface-600 px-2 py-0.5 text-[11px] tabular-nums">
+                <span className="flex size-5 items-center justify-center rounded-full bg-surface-700 text-[10px] tabular-nums text-text-primary">
                   {badge}
                 </span>
               )}
@@ -59,12 +59,14 @@ export default function TabPanel() {
         })}
       </div>
 
+      <section className="rounded-2xl border border-surface-600 bg-surface-800 overflow-hidden">
+
       {/* Mobile tab dropdown */}
       <div className="border-b border-surface-600 md:hidden">
         <select
           value={activeTab}
           onChange={(e) => setActiveTab(e.target.value as TabId)}
-          className="w-full bg-surface-800 px-4 py-3 text-sm text-text-primary outline-none"
+          className="w-full cursor-pointer bg-surface-800 px-4 py-3 text-sm text-text-primary outline-none"
           aria-label="Select section"
         >
           {tabs.map((tab) => (
@@ -82,6 +84,7 @@ export default function TabPanel() {
       {activeTab === 'compare' && <CompareTab />}
       {activeTab === 'favorites' && <FavoritesTab />}
       {activeTab === 'log' && <LogTab />}
-    </section>
+      </section>
+    </div>
   )
 }

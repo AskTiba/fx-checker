@@ -13,7 +13,7 @@ export default function App() {
       <Header />
       <Ticker />
 
-      <main className="mx-auto grid max-w-[1440px] gap-6 px-4 py-6 lg:grid-cols-[416px_1fr] lg:px-10 lg:py-8">
+      <main className="mx-auto max-w-[960px] space-y-6 px-4 py-6 lg:px-8 lg:py-10">
         <Converter />
         <TabPanel />
       </main>

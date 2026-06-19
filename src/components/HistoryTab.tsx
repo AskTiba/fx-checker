@@ -146,19 +146,27 @@ export default function HistoryTab() {
     <div className="p-5 lg:p-6">
       {/* Stats bar */}
       {stats && (
-        <div className="mb-6 grid grid-cols-4 gap-4">
-          <Stat label="Open" value={formatRate(stats.open)} />
-          <Stat label="Last" value={formatRate(stats.last)} />
-          <Stat
-            label="Change"
-            value={`${stats.change >= 0 ? '+' : ''}${formatRate(stats.change)}`}
-            positive={stats.change >= 0}
-          />
-          <Stat
-            label="% change"
-            value={`${stats.percentChange >= 0 ? '+' : ''}${stats.percentChange.toFixed(2)}%`}
-            positive={stats.percentChange >= 0}
-          />
+        <div className="mb-6 grid grid-cols-2 gap-4 md:grid-cols-4">
+          <div className="rounded-xl bg-surface-700/30 p-4">
+            <Stat label="Open" value={formatRate(stats.open)} />
+          </div>
+          <div className="rounded-xl bg-surface-700/30 p-4">
+            <Stat label="Last" value={formatRate(stats.last)} />
+          </div>
+          <div className="rounded-xl bg-surface-700/30 p-4">
+            <Stat
+              label="Change"
+              value={`${stats.change >= 0 ? '+' : ''}${formatRate(stats.change)}`}
+              positive={stats.change >= 0}
+            />
+          </div>
+          <div className="rounded-xl bg-surface-700/30 p-4">
+            <Stat
+              label="% change"
+              value={`${stats.percentChange >= 0 ? '+' : ''}${stats.percentChange.toFixed(2)}%`}
+              positive={stats.percentChange >= 0}
+            />
+          </div>
         </div>
       )}
 
@@ -170,7 +178,7 @@ export default function HistoryTab() {
             role="tab"
             aria-selected={chartRange === r}
             onClick={() => setChartRange(r)}
-            className={`rounded-md px-3 py-1 text-xs font-medium transition-colors ${
+            className={`cursor-pointer rounded-md px-3 py-1 text-xs font-medium transition-colors ${
               chartRange === r
                 ? 'bg-accent text-surface-900'
                 : 'bg-surface-700 text-text-secondary hover:bg-surface-600'
@@ -214,8 +222,8 @@ export default function HistoryTab() {
 function Stat({ label, value, positive }: { label: string; value: string; positive?: boolean }) {
   return (
     <div>
-      <p className="text-[10px] uppercase tracking-wider text-text-tertiary">{label}</p>
-      <p className={`font-mono text-sm font-semibold ${positive === true ? 'text-positive' : positive === false ? 'text-negative' : 'text-text-primary'}`}>
+      <p className="mb-1 text-[11px] font-medium uppercase tracking-wider text-text-tertiary">{label}</p>
+      <p className={`font-mono text-xl font-medium ${positive === true ? 'text-positive' : positive === false ? 'text-negative' : 'text-text-primary'}`}>
         {value}
       </p>
     </div>
