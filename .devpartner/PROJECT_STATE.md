@@ -9,7 +9,7 @@
 |---|---|
 | Project name | FX Checker |
 | Primary stack | React 19 + Vite + TypeScript + Tailwind CSS v4 + Zustand + Chart.js |
-| Repo / branch | Not yet initialized |
+| Repo / branch | `main` — 6 commits since init |
 | Current milestone | M0-M2 complete — Scaffold, Config, Layout Shell, Core Components |
 | Overall status | Green |
 
